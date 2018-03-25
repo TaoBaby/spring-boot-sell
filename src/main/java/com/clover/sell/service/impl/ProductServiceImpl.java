@@ -53,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
     @Transient
     public void decreaseStock(List<CartDTO> cartDTOList) {
         for(CartDTO cartDTO : cartDTOList){
-            ProductInfo productInfo = productInfoDAO.getOne(cartDTO.getProductId());
+            ProductInfo productInfo = productInfoDAO.findById(cartDTO.getProductId()).get();
             if(productInfo == null){
                 throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
             }

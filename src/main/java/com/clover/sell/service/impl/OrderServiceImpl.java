@@ -1,5 +1,7 @@
 package com.clover.sell.service.impl;
 
+import com.clover.sell.constants.OrderStatusEnum;
+import com.clover.sell.constants.PayStatusEnum;
 import com.clover.sell.constants.ResultEnum;
 import com.clover.sell.dao.OrderDetailDAO;
 import com.clover.sell.dao.OrderMasterDAO;
@@ -55,18 +57,20 @@ public class OrderServiceImpl implements OrderService {
                     .multiply(new BigDecimal(orderDetail.getProductQuantity()))
                     .add(orderAmount);
             //订单详情入库
+            BeanUtils.copyProperties(productInfo, orderDetail);
             orderDetail.setOrderId(orderId);
             orderDetail.setDetailId(KeyUtil.getUniqueKey());
-            BeanUtils.copyProperties(productInfo, orderDetail);
 
             orderDetailDAO.save(orderDetail);
         }
 
         //写入订单数据库
         OrderMaster orderMaster = new OrderMaster();
+        BeanUtils.copyProperties(orderDTO, orderMaster);
         orderMaster.setOrderAmount(orderAmount);
         orderMaster.setOrderId(orderId);
-        BeanUtils.copyProperties(orderDTO, orderMaster);
+        orderMaster.setOrderStatus(OrderStatusEnum.NEW.getCode());
+        orderMaster.setPayStatus(PayStatusEnum.WAIT.getCode());
         orderMasterDAO.save(orderMaster);
         //扣库存
 
