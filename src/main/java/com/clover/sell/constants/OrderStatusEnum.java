@@ -8,7 +8,7 @@ package com.clover.sell.constants;
 public enum OrderStatusEnum {
     NEW(0, "新订单"),
     FINISHED(1, "已完结"),
-    CANCEL(3, "取消");
+    CANCEL(2, "取消");
 
     private Integer code;
     private String desc;
