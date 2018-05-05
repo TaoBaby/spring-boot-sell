@@ -74,9 +74,9 @@ public class OrderServiceImpl implements OrderService {
 
         //写入订单数据库
         OrderMaster orderMaster = new OrderMaster();
+        orderDTO.setOrderId(orderId);
         BeanUtils.copyProperties(orderDTO, orderMaster);
         orderMaster.setOrderAmount(orderAmount);
-        orderMaster.setOrderId(orderId);
         orderMaster.setOrderStatus(OrderStatusEnum.NEW.getCode());
         orderMaster.setPayStatus(PayStatusEnum.WAIT.getCode());
         orderMasterDAO.save(orderMaster);
@@ -132,7 +132,7 @@ public class OrderServiceImpl implements OrderService {
         //返回库存
         if(CollectionUtils.isEmpty(orderDTO.getOrderDetailList())){
             log.error("【取消订单】订单中无商品详情,orderDTO = {}",orderDTO);
-            throw new SellException(ResultEnum.ORDER_DETAIL_EMPTY);
+            throw new SellException(ResultEnum.ORDERDETAIL_NOT_EXIST);
         }
         List<CartDTO> cartDTOList = orderDTO.getOrderDetailList().stream()
                 .map(e -> new CartDTO(e.getProductId(),e.getProductQuantity())).collect(Collectors.toList());

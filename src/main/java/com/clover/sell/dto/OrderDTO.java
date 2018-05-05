@@ -3,6 +3,10 @@ package com.clover.sell.dto;
 import com.clover.sell.constants.OrderStatusEnum;
 import com.clover.sell.constants.PayStatusEnum;
 import com.clover.sell.dataobject.OrderDetail;
+import com.clover.sell.utils.serializer.Date2LongSerializer;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import javax.persistence.Id;
 import java.math.BigDecimal;
@@ -13,6 +17,7 @@ import java.util.List;
  * Created by wuzhentao
  * 2018/3/24 15:48
  */
+//@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderDTO {
     /**订单id. */
     private String orderId;
@@ -38,7 +43,9 @@ public class OrderDTO {
     /** 支付状态 0 未支付(默认)  1已支付 */
     private Integer payStatus;
 
+    @JsonSerialize(using = Date2LongSerializer.class)
     private Date createTime;
+    @JsonSerialize(using = Date2LongSerializer.class)
     private Date updateTime;
 
     /** 订单详情. */
